@@ -1,8 +1,8 @@
 # Site Safety Intelligence
 
-A tool for a general contractor to quickly check the OSHA safety history of subcontractors before signing them on, and for a foreman to ask plain-English questions about them on site.
+A database and ingestion pipeline for a general contractor to quickly check the OSHA safety history of subcontractors before signing them on, and for a foreman to check specific violation history on site.
 
-Built with Python, SQLite, and Streamlit using the public OSHA inspection and violation CSVs from `data.dol.gov`.
+Built with Python and SQLite using the public OSHA inspection and violation CSVs from `data.dol.gov`.
 
 ## Database Schema
 
@@ -25,7 +25,7 @@ subcontractors (1) ---> (many) inspections (1) ---> (many) violations
 
 1. **Avoids repeating data:** Separating subcontractors, inspections, and violations means company info isn't duplicated on every violation row, and one company can link to multiple inspections with different name spellings.
 2. **Keeps the raw names:** Because OSHA company names are messy, keeping `raw_estab_name` on the inspections table makes it easy to check if two records were actually the same company or a false match.
-3. **Faster lookups for the GC:** Instead of joining millions of rows every time someone searches 10–15 subcontractors, the app reads from `subcontractor_risk_summary` straight away and only pulls the full inspection/violation rows when you click into a company or ask a question.
+3. **Faster lookups for the GC:** Instead of joining millions of rows every time someone checks 10–15 subcontractors, queries can hit `subcontractor_risk_summary` straight away and only pull full inspection/violation rows when drilling down into a company.
 
 ## Decisions and Trade-offs
 
@@ -37,9 +37,9 @@ subcontractors (1) ---> (many) inspections (1) ---> (many) violations
 
 ## How to Run
 
-1. Install packages:
+1. Install pandas:
    ```bash
-   pip install pandas streamlit rapidfuzz
+   pip install pandas
    ```
 2. Download the OSHA Inspection and Violation CSVs from `data.dol.gov` and put them in `data/OSHA_inspection/` and `data/OSHA_violation/`.
 3. Build the database:
