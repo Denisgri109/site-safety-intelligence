@@ -46,7 +46,3 @@ subcontractors (1) ---> (many) inspections (1) ---> (many) violations
    ```bash
    python ingest.py
    ```
-4. Start the app:
-   ```bash
-   streamlit run app.py
-   ```
